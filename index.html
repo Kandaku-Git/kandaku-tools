@@ -18,15 +18,14 @@
 <body>
    <header class="app-header">
     <div class="brand">
-      <span class="logo" aria-hidden="true">
         <button id="brandLogoBtn" class="brand-logo" type="button" aria-label="Agrandir le logo">
-        <img src="./images/KTools.png" alt="KTools" />
+            <img src="./images/KTools.png" alt="KTools" />
         </button>
-      </span>
-      <div>
-        <h1>QRcode Generator</h1>
-        <p class="subtitle">A KTool Item</p>
-      </div>
+
+        <div class="brand-text">
+            <h1>QRcode Generator</h1>
+            <p class="subtitle">A KTool Item</p>
+        </div>
     </div>
     <div class="header-actions">
       <button id="themeToggle" class="btn btn-ghost" type="button" aria-pressed="false">
@@ -325,13 +324,15 @@
   </div>
 </fieldset>
 
-
-
           <!-- Fond -->
-          <div class="field">
-            <label for="bgColor">Couleur arrière-plan</label>
-            <input id="bgColor" type="color" value="#ffffff" />
-          </div>
+          <fieldset class="panel subpanel">
+            <legend>Fond</legend>
+
+            <div class="field">
+             <input id="bgColor" type="color" value="#ffffff" />
+            </div>
+          </fieldset>
+
         </div>
       </section>
 

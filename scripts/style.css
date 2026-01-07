@@ -63,20 +63,12 @@ body {
    Header
 ----------------------------- */
 
-header,
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 100; /* Assure que le header reste au-dessus du contenu */
-  height: var(--header-h);
-  display: flex;
+.app-header{
+  height: auto;
+  min-height: var(--header-h);
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 18px;
-  background: var(--bg); /* Utilise la couleur de fond opaque du site */
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
 }
+
 
 
 .app-title{
@@ -184,11 +176,29 @@ textarea:focus-visible{
   display: block;
 }
 
-.brand {
+.brand{
   display: flex;
-  align-items: center; /* Aligne verticalement le logo et le texte */
-  gap: 12px; /* Espace entre le logo et le titre */
+  align-items: center; /* centre sur l’axe vertical (cross axis) */
+  gap: 12px;
 }
+
+.brand-text{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.brand-text h1{
+  margin: 0;
+  line-height: 1.05;
+  font-size: clamp(18px, 4.8vw, 32px);
+}
+
+.subtitle{
+  margin: 2px 0 0;
+}
+
 
 /* ----------------------------
    Shell layout
@@ -221,11 +231,18 @@ textarea:focus-visible{
   background: linear-gradient(to bottom, rgba(148,163,253,.32), rgba(56,189,248,.40));
 }
 
-/* Colonne droite */
+/* La colonne droite doit être "assez haute" pour laisser la sticky fonctionner */
 .main{
-  display:block;
-  min-height: calc(100vh - var(--header-h));
+  align-self: stretch; /* important en layout grid */
 }
+
+/* Le QR reste visible sous le header sticky */
+.preview{
+  position: sticky;
+  top: calc(var(--header-h) + 16px);
+  z-index: 10;
+}
+
 
 /* ----------------------------
    Panels
@@ -502,3 +519,8 @@ hr{
   }
 }
 
+@media (max-width: 480px){
+  .app-header{ padding: 10px 12px; }
+  .brand-text h1{ font-size: clamp(16px, 6vw, 22px); line-height: 1.05; }
+  .subtitle{ font-size: 11px; }
+}
