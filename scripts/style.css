@@ -89,6 +89,8 @@ header,
   font-size: 12px;
 }
 
+.subtitle{ margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+
 /* boutons header */
 .header-actions{
   display:flex;
@@ -119,6 +121,16 @@ select:focus-visible,
 textarea:focus-visible{
   outline: 2px solid rgba(56,189,248,.65);
   outline-offset: 2px;
+}
+
+.logo{
+  width: 44px; height: 44px;
+  display:grid; place-items:center;
+  border-radius: 12px;
+  background: rgba(110,168,255,.18);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  font-weight: 700;
 }
 
 /* ----------------------------
