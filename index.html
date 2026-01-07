@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Générateur de QR codes personnalisés avec styles, couleurs, logo et import de configuration JSON." />
+  <meta name="theme-color" content="#0b1220" />
+  <title>QR SPA — Générateur de QR codes</title>
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="stylesheet" href="./scripts/style.css" />
+
+  <!-- QR Code Styling -->
+  <script defer src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script> <!-- [web:171] -->
+  <script defer src="./scripts/app.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#mainPreview">Aller au QR</a>
+
+  <header class="app-header">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">▦</span>
+      <div>
+        <h1>QR SPA</h1>
+        <p class="subtitle">QR stylés avec logo, couleurs et import JSON.</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="themeToggle" class="btn btn-ghost" type="button" aria-pressed="false">
+        Thème : Auto
+      </button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <!-- Colonne gauche -->
+    <aside class="sidebar" aria-label="Paramètres">
+
+      <!-- PANEL CONTENU -->
+      <section class="panel" data-collapsible>
+        <header class="panel-header">
+          <h2>Contenu</h2>
+          <button type="button" class="panel-toggle" aria-label="Replier Contenu">▾</button>
+        </header>
+        <div class="panel-body">
+          <div class="field">
+            <label for="contentType">Type</label>
+            <select id="contentType" name="contentType">
+              <option value="url">URL</option>
+              <option value="text">Texte</option>
+              <option value="email">Email</option>
+              <option value="phone">Téléphone</option>
+              <option value="wifi">WiFi</option>
+              <option value="vcard">vCard</option>
+            </select>
+          </div>
+
+          <!-- URL -->
+          <div class="type-panel" data-type="url">
+            <div class="field">
+              <label for="urlValue">URL</label>
+              <input id="urlValue" type="url" inputmode="url" placeholder="https://exemple.com" autocomplete="off" />
+              <p class="hint">Inclure https:// pour une meilleure compatibilité.</p>
+            </div>
+          </div>
+
+          <!-- Texte -->
+          <div class="type-panel" data-type="text" hidden>
+            <div class="field">
+              <label for="textValue">Texte</label>
+              <textarea id="textValue" rows="4" placeholder="Votre texte…"></textarea>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="type-panel" data-type="email" hidden>
+            <div class="field">
+              <label for="emailTo">Destinataire</label>
+              <input id="emailTo" type="email" placeholder="contact@exemple.com" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="emailSubject">Sujet (optionnel)</label>
+              <input id="emailSubject" type="text" placeholder="Bonjour" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="emailBody">Message (optionnel)</label>
+              <textarea id="emailBody" rows="3" placeholder="Votre message…"></textarea>
+            </div>
+          </div>
+
+          <!-- Téléphone -->
+          <div class="type-panel" data-type="phone" hidden>
+            <div class="field">
+              <label for="phoneValue">Numéro</label>
+              <input id="phoneValue" type="tel" inputmode="tel" placeholder="+33612345678" autocomplete="off" />
+              <p class="hint">Format recommandé : +33… (les espaces sont acceptés).</p>
+            </div>
+          </div>
+
+          <!-- WiFi -->
+          <div class="type-panel" data-type="wifi" hidden>
+            <div class="field">
+              <label for="wifiSsid">SSID (nom du réseau)</label>
+              <input id="wifiSsid" type="text" placeholder="MonWiFi" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="wifiAuth">Sécurité</label>
+              <select id="wifiAuth">
+                <option value="WPA">WPA/WPA2/WPA3</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Aucune</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="wifiPass">Mot de passe</label>
+              <input id="wifiPass" type="password" placeholder="••••••••" autocomplete="off" />
+            </div>
+            <div class="field checkbox">
+              <input id="wifiHidden" type="checkbox" />
+              <label for="wifiHidden">Réseau masqué</label>
+            </div>
+          </div>
+
+          <!-- vCard -->
+          <div class="type-panel" data-type="vcard" hidden>
+            <div class="grid2">
+              <div class="field">
+                <label for="vcFirst">Prénom</label>
+                <input id="vcFirst" type="text" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="vcLast">Nom</label>
+                <input id="vcLast" type="text" autocomplete="off" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="vcOrg">Organisation (optionnel)</label>
+              <input id="vcOrg" type="text" autocomplete="off" />
+            </div>
+            <div class="grid2">
+              <div class="field">
+                <label for="vcPhone">Téléphone (optionnel)</label>
+                <input id="vcPhone" type="tel" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="vcEmail">Email (optionnel)</label>
+                <input id="vcEmail" type="email" autocomplete="off" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="vcUrl">Site (optionnel)</label>
+              <input id="vcUrl" type="url" inputmode="url" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL STYLES -->
+      <section class="panel" data-collapsible>
+        <header class="panel-header">
+          <h2>Styles</h2>
+          <button type="button" class="panel-toggle" aria-label="Replier Styles">▾</button>
+        </header>
+        <div class="panel-body">
+          <div class="field">
+            <label for="size">Taille du QR (px)</label>
+            <input id="size" type="range" min="128" max="1024" step="16" value="320" />
+            <div class="range-row">
+              <span id="sizeLabel" class="mono">320</span>
+              <button id="resetSize" class="btn btn-ghost" type="button">Réinitialiser</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ecc">Correction d’erreur (résistance aux dégâts)</label>
+            <select id="ecc">
+              <option value="L">L – Faible (7%)</option>
+              <option value="M" selected>M – Moyen (15%)</option>
+              <option value="Q">Q – Élevé (25%)</option>
+              <option value="H">H – Très élevé (30%)</option>
+            </select>
+            <p class="hint">
+              Plus le niveau est élevé, plus le QR reste lisible s’il est abîmé ou recouvert (logo, rayures…). [web:162][web:204]
+            </p>
+          </div>
+
+          <fieldset class="panel subpanel">
+            <legend>Motifs</legend>
+
+            <div class="field">
+              <label for="dotsStyle">Points</label>
+              <select id="dotsStyle">
+                <option value="square">Carrés</option>
+                <option value="dots">Points</option>
+                <option value="rounded">Arrondi</option>
+                <option value="classy">Classy</option>
+                <option value="classy-rounded">Classy arrondi</option>
+                <option value="extra-rounded">Extra arrondi</option>
+              </select>
+            </div>
+
+            <div class="grid2">
+              <div class="field">
+                <label for="cornersSquareStyle">Angles (carrés)</label>
+                <select id="cornersSquareStyle">
+                  <option value="square">Carré</option>
+                  <option value="dot">Point</option>
+                  <option value="rounded">Arrondi</option>
+                  <option value="extra-rounded">Extra arrondi</option>
+                  <option value="classy">Classy</option>
+                  <option value="classy-rounded">Classy arrondi</option>
+                  <option value="dots">Points</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="cornersDotStyle">Angles (points)</label>
+                <select id="cornersDotStyle">
+                  <option value="dot">Point</option>
+                  <option value="square">Carré</option>
+                  <option value="rounded">Arrondi</option>
+                  <option value="extra-rounded">Extra arrondi</option>
+                  <option value="classy">Classy</option>
+                  <option value="classy-rounded">Classy arrondi</option>
+                  <option value="dots">Points</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </section>
+
+      <!-- PANEL COULEURS -->
+      <section class="panel" data-collapsible>
+        <header class="panel-header">
+          <h2>Couleurs</h2>
+          <button type="button" class="panel-toggle" aria-label="Replier Couleurs">▾</button>
+        </header>
+        <div class="panel-body">
+
+          <!-- Points -->
+          <fieldset class="panel subpanel">
+  <legend>Points</legend>
+
+  <div class="field">
+    <label for="pointsMode">Mode</label>
+    <select id="pointsMode">
+      <option value="solid" selected>Uni</option>
+      <option value="linear">Dégradé linéaire</option>
+      <option value="radial">Dégradé radial</option>
+    </select>
+  </div>
+
+  <div id="pointsSolidPanel" class="field">
+    <label for="pointsColor">Couleur points</label>
+    <input id="pointsColor" type="color" value="#0b1220" />
+  </div>
+
+  <div id="pointsGradientPanel" hidden>
+    <div class="grid2">
+      <div class="field">
+        <label for="pointsGradColor1">Couleur 1</label>
+        <input id="pointsGradColor1" type="color" value="#0b1220" />
+      </div>
+      <div class="field">
+        <label for="pointsGradColor2">Couleur 2</label>
+        <input id="pointsGradColor2" type="color" value="#2563eb" />
+      </div>
+    </div>
+
+    <div class="field" id="pointsRotationField">
+      <label for="pointsGradRotation">Rotation (°)</label>
+      <input id="pointsGradRotation" type="range" min="0" max="360" step="1" value="0" />
+    </div>
+
+    <div class="field" id="pointsIntensityField" hidden>
+      <label for="pointsIntensity">Intensité (radial)</label>
+      <input id="pointsIntensity" type="range" min="0" max="100" step="1" value="50" />
+    </div>
+  </div>
+</fieldset>
+
+
+          <!-- Angles -->
+          <fieldset class="panel subpanel">
+  <legend>Angles</legend>
+
+  <div class="field">
+    <label for="cornersMode">Mode</label>
+    <select id="cornersMode">
+      <option value="solid" selected>Uni</option>
+      <option value="linear">Dégradé linéaire</option>
+      <option value="radial">Dégradé radial</option>
+    </select>
+  </div>
+
+  <div id="cornersSolidPanel" class="field">
+    <label for="cornersColor">Couleur angles</label>
+    <input id="cornersColor" type="color" value="#000000" />
+  </div>
+
+  <div id="cornersGradientPanel" hidden>
+    <div class="grid2">
+      <div class="field">
+        <label for="cornersGradColor1">Couleur 1</label>
+        <input id="cornersGradColor1" type="color" value="#000000" />
+      </div>
+      <div class="field">
+        <label for="cornersGradColor2">Couleur 2</label>
+        <input id="cornersGradColor2" type="color" value="#111827" />
+      </div>
+    </div>
+
+    <div class="field" id="cornersRotationField">
+      <label for="cornersGradRotation">Rotation (°)</label>
+      <input id="cornersGradRotation" type="range" min="0" max="360" step="1" value="0" />
+    </div>
+
+    <div class="field" id="cornersIntensityField" hidden>
+      <label for="cornersIntensity">Intensité (radial)</label>
+      <input id="cornersIntensity" type="range" min="0" max="100" step="1" value="50" />
+    </div>
+  </div>
+</fieldset>
+
+
+
+          <!-- Fond -->
+          <div class="field">
+            <label for="bgColor">Couleur arrière-plan</label>
+            <input id="bgColor" type="color" value="#ffffff" />
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL LOGO -->
+      <section class="panel" data-collapsible>
+        <header class="panel-header">
+          <h2>Logo</h2>
+          <button type="button" class="panel-toggle" aria-label="Replier Logo">▾</button>
+        </header>
+        <div class="panel-body">
+          <div class="field">
+            <label for="logoFile">Image (PNG/SVG/JPG…)</label>
+            <input id="logoFile" type="file" accept="image/*" />
+            <p class="hint">
+              Le logo est centré et redimensionné automatiquement. Utiliser un niveau de correction Q ou H pour plus de sécurité. [web:188][web:215]
+            </p>
+          </div>
+
+          <div class="field">
+            <label for="logoSize">Taille logo (ratio)</label>
+            <input id="logoSize" type="range" min="0.10" max="0.45" step="0.01" value="0.25" />
+            <div class="range-row">
+              <span id="logoSizeLabel" class="mono">25%</span>
+            </div>
+          </div>
+
+          <div class="field checkbox">
+            <input id="hideBgDots" type="checkbox" checked />
+            <label for="hideBgDots">Masquer les points derrière le logo</label>
+          </div>
+
+          <div class="field">
+            <span id="logoStatus" class="hint"></span>
+          </div>
+
+          <div class="panel-actions">
+            <button id="clearLogo" class="btn btn-ghost" type="button">Retirer le logo</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pied gauche : Restaurer JSON -->
+      <footer class="left-footer">
+        <button id="restoreConfigBtn" class="btn btn-ghost" type="button">
+          Restaurer la configuration (JSON)
+        </button>
+        <input id="restoreConfigInput" type="file" accept=".json,application/json" hidden />
+      </footer>
+    </aside>
+
+    <!-- Splitter draggable -->
+    <div class="splitter" id="splitter" aria-hidden="true"></div>
+
+    <!-- Colonne droite : QR centré -->
+    <main class="main" id="mainPreview">
+      <section class="preview" aria-label="Prévisualisation QR">
+        <div class="preview-card">
+          <div class="preview-top">
+            <h2>Prévisualisation</h2>
+            <span id="statusPill" class="pill" aria-live="polite">Prêt</span>
+          </div>
+
+          <div class="qr-wrap">
+            <div id="qrcode" class="qrcode"></div>
+          </div>
+
+          <div class="actions">
+            <button id="downloadPng" class="btn" type="button">Télécharger PNG</button>
+            <button id="downloadSvg" class="btn" type="button">Télécharger SVG</button>
+            <button id="copyImg" class="btn btn-ghost" type="button">Copier l’image</button>
+            <button id="shareBtn" class="btn btn-ghost" type="button">Partager</button>
+          </div>
+
+          <div class="meta">
+            <p class="mono" id="payloadPreview" title="Texte encodé (aperçu)"></p>
+            <p class="error" id="errorBox" role="alert" hidden></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <noscript>
+    <div class="noscript">
+      JavaScript est requis pour générer les QR codes.
+    </div>
+  </noscript>
+</body>
+</html>
