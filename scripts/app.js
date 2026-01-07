@@ -963,6 +963,25 @@
     // Restore JSON
     els.restoreConfigBtn.addEventListener('click', triggerRestore);
     els.restoreConfigInput.addEventListener('change', handleRestoreFileChange);
+
+    // Lightbox logo (header)
+    const brandLogoBtn = document.getElementById("brandLogoBtn");
+    const logoLightbox = document.getElementById("logoLightbox");
+
+    const closeLogo = () => {
+      if (logoLightbox) logoLightbox.hidden = true;
+    };
+
+    brandLogoBtn?.addEventListener("click", () => {
+      if (logoLightbox) logoLightbox.hidden = false;
+    });
+
+    logoLightbox?.addEventListener("click", closeLogo);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLogo();
+    });
+
   }
 
   function initDefaults() {

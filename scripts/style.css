@@ -45,33 +45,39 @@ html, body{
   height:100%;
 }
 
-body{
-  margin:0;
+body {
+  margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  /* Garde vos dégradés actuels */
   background: radial-gradient(1200px 600px at 20% -10%, rgba(148,163,253,.25), transparent 60%),
               radial-gradient(1200px 600px at 90% 10%, rgba(56,189,248,.25), transparent 55%),
               var(--bg);
+  background-attachment: fixed; /* Empêche le dégradé de défiler avec la page */
+  background-repeat: no-repeat; /* Évite toute répétition visuelle */
+  background-size: cover; /* S'assure que le fond couvre tout l'écran */
   color: var(--text);
 }
+
 
 /* ----------------------------
    Header
 ----------------------------- */
 
 header,
-.app-header{
+.app-header {
   position: sticky;
-  top:0;
-  z-index: 50;
+  top: 0;
+  z-index: 100; /* Assure que le header reste au-dessus du contenu */
   height: var(--header-h);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 12px 18px;
-  background: linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,0));
-  backdrop-filter: blur(10px);
+  background: var(--bg); /* Utilise la couleur de fond opaque du site */
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
+
 
 .app-title{
   display:flex;
@@ -131,6 +137,57 @@ textarea:focus-visible{
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   font-weight: 700;
+}
+
+.brand-logo{
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(110,168,255,.18);
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+  cursor: zoom-in;
+}
+
+.brand-logo img{
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Lightbox (logo agrandi) */
+.logo-lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0,0,0,.70);
+  backdrop-filter: blur(8px);
+}
+
+.logo-lightbox-inner{
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: zoom-out;
+}
+
+.logo-lightbox-inner img{
+  width: min(80vw, 520px);
+  height: auto;
+  display: block;
+}
+
+.brand {
+  display: flex;
+  align-items: center; /* Aligne verticalement le logo et le texte */
+  gap: 12px; /* Espace entre le logo et le titre */
 }
 
 /* ----------------------------
@@ -418,21 +475,25 @@ hr{
 
 @media (max-width: 980px){
   .app-shell{
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     padding: 10px 12px 14px;
   }
 
-  .splitter{
-    display:none;
-  }
+  .main{ order: 1; }     /* Prévisualisation en premier */
+  .sidebar{ order: 2; }  /* Paramètres en dessous */
 
+  .splitter{ display:none; }
+
+  /* tes règles existantes */
   .sidebar{
     width:auto !important;
     max-width: none;
   }
 
   .preview{
-    position: relative; /* sticky désactivé sur mobile pour éviter effet gênant */
+    position: relative;
     top: auto;
   }
 
@@ -440,3 +501,4 @@ hr{
     grid-template-columns: 1fr;
   }
 }
+

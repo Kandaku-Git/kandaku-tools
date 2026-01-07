@@ -18,7 +18,11 @@
 <body>
    <header class="app-header">
     <div class="brand">
-      <span class="logo" aria-hidden="true">▦</span>
+      <span class="logo" aria-hidden="true">
+        <button id="brandLogoBtn" class="brand-logo" type="button" aria-label="Agrandir le logo">
+        <img src="./images/KTools.png" alt="KTools" />
+        </button>
+      </span>
       <div>
         <h1>QRcode Generator</h1>
         <p class="subtitle">A KTool Item</p>
@@ -415,5 +419,10 @@
       JavaScript est requis pour générer les QR codes.
     </div>
   </noscript>
+  <div id="logoLightbox" class="logo-lightbox" hidden>
+    <button id="logoLightboxBtn" class="logo-lightbox-inner" type="button" aria-label="Fermer le logo">
+        <img src="./images/KTools.png" alt="KTools" />
+    </button>
+  </div>
 </body>
 </html>
